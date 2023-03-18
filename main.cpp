@@ -164,11 +164,12 @@ void startgame()
     Level lv{0};
     Game gm{pl,lv};
     gm.buildmatrix();
-    int dummy = 0, dummy2, cx = 10, cy = 10;
+    int dummy = 0, cx = 10, cy = 10;
     while(pl.alive()){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
+        int dummy2;
         dummy2 = dummy;
         std::cout << lv << "\n";
         while(dummy != 0) {
