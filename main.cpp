@@ -153,10 +153,7 @@ public:
             return 0;
         return 1;
     }
-    bool operator==(const Game &rhs) const {
-        std:: cout<<"Op=="<<"\n";
-        return 0;
-    }
+    
     // op==
 
     friend std::ostream &operator<<(std::ostream &os, const Game &game) {
