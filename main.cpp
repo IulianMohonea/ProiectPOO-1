@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <fstream>
+#include <utility>
+
 
 
 class Player {
@@ -11,11 +12,11 @@ private:
 
     std:: string name;
 public:
-    Player(const int x_, int y_, int hp_, std::string name_) : x{x_}, y{y_}, hp{hp_}, name{name_} {
+    Player(const int x_, int y_, int hp_, std::string name_) : x{x_}, y{y_}, hp{hp_}, name{std::move(name_)} {
         std:: cout<<name << "\n";
     }
     // const de initializare
-    int alive () {
+    [[nodiscard]] int alive () const {
         return hp;
     }
     void hit (){
@@ -27,11 +28,11 @@ public:
     }
     // op<<
 
-    void getxy(int& cx, int& cy){
+    void getxy(int& cx, int& cy) const{
         cx = x;
         cy = y;
     }
-    void hpshow(){
+    void hpshow() const{
         std:: cout <<"Viata ramasa:" << hp<<"\n";
     }
 
@@ -42,7 +43,7 @@ private:
     int lvl;
 public:
 
-    Level(const int lvl_) : lvl{lvl_} {
+    explicit Level(const int lvl_) : lvl{lvl_} {
         std:: cout<<"Level initial: "<< lvl<< "\n";
     }
     // constructor de initializare
@@ -54,7 +55,7 @@ public:
     void nextlvl(){
         ++lvl;
     }
-    void getlvl(int& clvl){
+    void getlvl(int& clvl) const{
         clvl = lvl;
     }
     // op<<
@@ -64,51 +65,35 @@ public:
 class Game {
 private:
     static const int n = 20;
-    int m[n][n];
+    int m[n][n]{};
     Player pl;
     Level lv;
 
 public:
-    Game(Player player_ , Level level_) :pl{player_}, lv{level_}{
+    Game(Player player_ , Level level_) :pl{std::move(player_)}, lv{level_}{
         std:: cout<<pl << lv << '\n';
     }
     // const de initializare
     void buildmatrix (){
-        for (int i = 0; i < n ; i++)
+        for (auto & i : m)
         {
-            for (int j = 0; j < n; j++)
+            for (int & j : i)
             {
-                m[i][j] = 0;
+                j = 0;
             }
         }
     }
 
     void afmatrix (){
-        
-        for (int i = 0; i < n ; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if(m[i][j] == -1){
-                    
-                    std:: cout<<" ";
-                }
-                else if (m[i][j] == 0){
-                    
-                    std:: cout<<" ";
-                }
-                else if(m[i][j] == 1){
-                    
-                    std:: cout<<" ";
-                }
-                else{
-                    
-                    std:: cout<<" ";
-                }
 
+        for (auto & i : m)
+        {
+            for (int j : i)
+            {
+                std:: cout << j << " ";
             }
             std:: cout<<"\n";
-            
+
         }
     }
 
@@ -116,8 +101,8 @@ public:
         m[cx][cy] = 1;
     }
 
-    void movement(int& cx, int& cy){
-        char mymove = ' ';
+    static void movement(int& cx, int& cy){
+        char mymove;
 
         std::cin >> mymove;
         if (mymove == 'W') {
@@ -151,14 +136,17 @@ public:
             return 0;
         return 1;
     }
-    
+    bool operator==(const char *rhs) const {
+        std:: cout << "Op== " << (const char *) rhs << "\n";
+        return true;
+    }
     // op==
 
-    friend std::ostream &operator<<(std::ostream &os, const Game &game) {
-        os << "n: " << game.n;
-        std:: cout<< "game.n";
-        return os;
-    }
+    // friend std::ostream &operator<<(std::ostream &os, const Game &game) {
+       // os << "n: " << game;
+       // std:: cout<< "game.n";
+       // return os;
+    //}
     // op<<
 
 
@@ -176,23 +164,22 @@ void startgame()
     Level lv{0};
     Game gm{pl,lv};
     gm.buildmatrix();
-    int contor = 10;
-    int dummy = 0, dummy2 = 0 , cx = 10, cy = 10;
-    while(pl.alive() and contor!=0){
+    int dummy = 0, dummy2, cx = 10, cy = 10;
+    while(pl.alive()){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
         dummy2 = dummy;
         std::cout << lv << "\n";
         while(dummy != 0) {
-            gm.movement(cx, cy);
+            Game::movement(cx, cy);
             dummy--;
         }
         gm.putinmatrix(cx,cy);
         gm.afmatrix();
         std:: cout<<"Miscarea mea \n";
         while(dummy2 != 0){
-            int a=0,b=0;
+            int a = 0 ,b = 0;
             std::cin >> a >> b;
             gm.randomshoot(a,b);
             dummy2--;
@@ -204,7 +191,6 @@ void startgame()
         }
         pl.hpshow();
         gm.buildmatrix();
-        contor--;
     }
 
 }
