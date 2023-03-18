@@ -155,7 +155,7 @@ public:
     }
     bool operator==(const Game &rhs) const {
         std:: cout<<"Op=="<<"\n";
-        return n == rhs.n;
+        return 0;
     }
     // op==
 
@@ -181,8 +181,9 @@ void startgame()
     Level lv{0};
     Game gm{pl,lv};
     gm.buildmatrix();
+    int contor = 10;
     int dummy = 0, dummy2, cx = 10, cy = 10;
-    while(pl.alive()){
+    while(pl.alive() and contor!=0){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
@@ -208,6 +209,7 @@ void startgame()
         }
         pl.hpshow();
         gm.buildmatrix();
+        contor--;
     }
 
 }
