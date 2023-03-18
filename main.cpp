@@ -102,7 +102,7 @@ public:
     }
 
     static void movement(int& cx, int& cy){
-        char mymove;
+        char mymove = 'D';
 
         std::cin >> mymove;
         if (mymove == 'W') {
