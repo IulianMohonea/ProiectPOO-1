@@ -138,11 +138,11 @@ public:
     
     // op==
 
-    // friend std::ostream &operator<<(std::ostream &os, const Game &game) {
-       // os << "n: " << game;
-       // std:: cout<< "game.n";
-       // return os;
-    //}
+     friend std::ostream &operator<<(std::ostream &os, const Game &game) {
+        os << "n: " << game;
+        std:: cout<< "game.n";
+        return os;
+    }
     // op<<
 
 
