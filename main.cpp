@@ -125,7 +125,6 @@ public:
 
     void randomshoot(int a, int b){
 
-        std:: cout<<a<<b<<"Fisier \n";
         if (m[a][b] == 1)
             m[a][b] = -2;
         else
@@ -136,10 +135,7 @@ public:
             return 0;
         return 1;
     }
-    bool operator==(const char *rhs) const {
-        std:: cout << "Op== " << (const char *) rhs << "\n";
-        return true;
-    }
+    
     // op==
 
     // friend std::ostream &operator<<(std::ostream &os, const Game &game) {
@@ -182,6 +178,7 @@ void startgame()
         while(dummy2 != 0){
             int a = 0 ,b = 0;
             std::cin >> a >> b;
+            if (a>=0 and a<=19 and b<=19 and b>=0)
             gm.randomshoot(a,b);
             dummy2--;
         }
