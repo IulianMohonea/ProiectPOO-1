@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <windows.h>
+
 
 std::ifstream fin("proiect.txt");
 
@@ -86,36 +86,31 @@ public:
     }
 
     void afmatrix (){
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        
         for (int i = 0; i < n ; i++)
         {
             for (int j = 0; j < n; j++)
             {
                 if(m[i][j] == -1){
-                    SetConsoleTextAttribute(hConsole,
-                                            BACKGROUND_RED);
+                    
                     std:: cout<<" ";
                 }
                 else if (m[i][j] == 0){
-                    SetConsoleTextAttribute(hConsole,
-                                            BACKGROUND_GREEN);
+                    
                     std:: cout<<" ";
                 }
                 else if(m[i][j] == 1){
-                    SetConsoleTextAttribute(hConsole,
-                                            BACKGROUND_BLUE);
+                    
                     std:: cout<<" ";
                 }
                 else{
-                    SetConsoleTextAttribute(hConsole,
-                                            BACKGROUND_INTENSITY);
+                    
                     std:: cout<<" ";
                 }
 
             }
             std:: cout<<"\n";
-            SetConsoleTextAttribute(hConsole,
-                                    BACKGROUND_GREEN);
+            
         }
     }
 
