@@ -161,7 +161,8 @@ void startgame()
     Game gm{pl,lv};
     gm.buildmatrix();
     int dummy = 0, cx = 10, cy = 10;
-    while(pl.alive()){
+    int maxim = 10;
+    while(pl.alive() and maxim>0 ){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
@@ -189,6 +190,7 @@ void startgame()
         }
         pl.hpshow();
         gm.buildmatrix();
+        maxim--;
     }
 
 }
