@@ -52,13 +52,14 @@ public:
         os << "lvl: " << level.lvl;
         return os;
     }
+    // op<<
     void nextlvl(){
         ++lvl;
     }
     void getlvl(int& clvl) const{
         clvl = lvl;
     }
-    // op<<
+
 };
 
 
@@ -102,7 +103,7 @@ public:
     }
 
     static void movement(int& cx, int& cy){
-        char mymove = 'D';
+        char mymove = ' ';
 
         std::cin >> mymove;
         if (mymove == 'W') {
@@ -125,6 +126,7 @@ public:
 
     void randomshoot(int a, int b){
 
+        std:: cout<<a<<b<<"Fisier \n";
         if (m[a][b] == 1)
             m[a][b] = -2;
         else
@@ -135,13 +137,16 @@ public:
             return 0;
         return 1;
     }
-    
+    bool operator==(const char *rhs) const {
+        std:: cout << "Op== " << (const char *) rhs << "\n";
+        return true;
+    }
     // op==
 
-     friend std::ostream &operator<<(std::ostream &os, const Game &game) {
-        os << "n: " << game;
-        std:: cout<< "game.n";
-        return os;
+    friend std::ostream &operator<<(std::ostream &os, const Game &game) {
+       os << "n: " << game.lv << game.pl;
+       
+       return os;
     }
     // op<<
 
@@ -161,8 +166,7 @@ void startgame()
     Game gm{pl,lv};
     gm.buildmatrix();
     int dummy = 0, cx = 10, cy = 10;
-    int maxim = 10;
-    while(pl.alive() and maxim>0 ){
+    while(pl.alive()){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
@@ -179,7 +183,6 @@ void startgame()
         while(dummy2 != 0){
             int a = 0 ,b = 0;
             std::cin >> a >> b;
-            if (a>=0 and a<=19 and b<=19 and b>=0)
             gm.randomshoot(a,b);
             dummy2--;
         }
@@ -190,7 +193,6 @@ void startgame()
         }
         pl.hpshow();
         gm.buildmatrix();
-        maxim--;
     }
 
 }
