@@ -145,7 +145,7 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Game &game) {
        os << "n: " << game.lv << game.pl;
-       
+
        return os;
     }
     // op<<
@@ -166,7 +166,8 @@ void startgame()
     Game gm{pl,lv};
     gm.buildmatrix();
     int dummy = 0, cx = 10, cy = 10;
-    while(pl.alive()){
+    int maxlvl = 10;
+    while(pl.alive() and maxlvl != 0){
         pl.getxy(cx,cy);
         lv.nextlvl();
         lv.getlvl(dummy);
@@ -193,6 +194,7 @@ void startgame()
         }
         pl.hpshow();
         gm.buildmatrix();
+        maxlvl--;
     }
 
 }
