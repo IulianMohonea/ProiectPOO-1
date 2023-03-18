@@ -3,8 +3,6 @@
 #include <fstream>
 
 
-std::ifstream fin("proiect.txt");
-
 class Player {
 private:
     const int x;
@@ -119,7 +117,7 @@ public:
     }
 
     void movement(int& cx, int& cy){
-        char mymove;
+        char mymove = ' ';
 
         std::cin >> mymove;
         if (mymove == 'W') {
@@ -179,7 +177,7 @@ void startgame()
     Game gm{pl,lv};
     gm.buildmatrix();
     int contor = 10;
-    int dummy = 0, dummy2, cx = 10, cy = 10;
+    int dummy = 0, dummy2 = 0 , cx = 10, cy = 10;
     while(pl.alive() and contor!=0){
         pl.getxy(cx,cy);
         lv.nextlvl();
@@ -194,7 +192,7 @@ void startgame()
         gm.afmatrix();
         std:: cout<<"Miscarea mea \n";
         while(dummy2 != 0){
-            int a,b;
+            int a=0,b=0;
             std::cin >> a >> b;
             gm.randomshoot(a,b);
             dummy2--;
