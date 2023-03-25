@@ -3,11 +3,10 @@
 #include <utility>
 
 
-
 class Player {
 private:
-    const int x;
-    const int y;
+    int x;
+    int y;
     int hp;
 
     std:: string name;
@@ -75,6 +74,17 @@ public:
         std:: cout<<pl << lv << '\n';
     }
     // const de initializare
+    Game(const Game& other) : pl(other.pl), lv(other.lv){
+        std::cout<< "constr de copiere \n";
+    }
+    Game& operator=(const Game& other) {
+        if(this != &other) {
+            this->pl = other.pl;
+            this->lv = other.lv;
+        }
+        std:: cout<< "op= Game \n";
+        return *this;
+    }
     void buildmatrix (){
         for (auto & i : m)
         {
@@ -104,7 +114,7 @@ public:
 
     static void movement(int& cx, int& cy){
         char mymove = ' ';
-
+        std:: cout<<"Miscarea mea: \n";
         std::cin >> mymove;
         if (mymove == 'W') {
             cx--;
@@ -126,7 +136,6 @@ public:
 
     void randomshoot(int a, int b){
 
-        std:: cout<<a<<b<<"Fisier \n";
         if (m[a][b] == 1)
             m[a][b] = -2;
         else
@@ -137,11 +146,38 @@ public:
             return 0;
         return 1;
     }
-    bool operator==(const char *rhs) const {
-        std:: cout << "Op== " << (const char *) rhs << "\n";
-        return true;
+    void startgame(){
+        int dummy = 0, cx = 10, cy = 10;
+        int maxlvl = 10;
+        while(pl.alive() and maxlvl != 0){
+            pl.getxy(cx,cy);
+            lv.nextlvl();
+            lv.getlvl(dummy);
+            int dummy2;
+            dummy2 = dummy;
+            std::cout << lv << "\n";
+            while(dummy != 0) {
+                Game::movement(cx, cy);
+                dummy--;
+            }
+            putinmatrix(cx,cy);
+            afmatrix();
+            while(dummy2 != 0){
+                int a = 0 ,b = 0;
+                std::cout<<"Random misc: \n";
+                std::cin >> a >> b;
+                randomshoot(a,b);
+                dummy2--;
+            }
+            afmatrix();
+            if(verhit(cx,cy) == 0){
+                pl.hit();
+            }
+            pl.hpshow();
+            buildmatrix();
+            maxlvl--;
+        }
     }
-    // op==
 
     friend std::ostream &operator<<(std::ostream &os, const Game &game) {
        os << "n: " << game.lv << game.pl;
@@ -158,51 +194,20 @@ public:
 
 
 };
-void startgame()
+void initialize()
 {
 
-    Player pl{10,10,3,"Chad"};
+    Player pl{10,10,3,"Ion"};
     Level lv{0};
     Game gm{pl,lv};
-    gm.buildmatrix();
-    int dummy = 0, cx = 10, cy = 10;
-    int maxlvl = 10;
-    while(pl.alive() and maxlvl != 0){
-        pl.getxy(cx,cy);
-        lv.nextlvl();
-        lv.getlvl(dummy);
-        int dummy2;
-        dummy2 = dummy;
-        std::cout << lv << "\n";
-        while(dummy != 0) {
-            Game::movement(cx, cy);
-            dummy--;
-        }
-        gm.putinmatrix(cx,cy);
-        gm.afmatrix();
-        std:: cout<<"Miscarea mea \n";
-        while(dummy2 != 0){
-            int a = 0 ,b = 0;
-            std::cin >> a >> b;
-            gm.randomshoot(a,b);
-            dummy2--;
-        }
-        gm.afmatrix();
-        std::cout<<"Random misc \n";
-        if(gm.verhit(cx,cy) == 0){
-            pl.hit();
-        }
-        pl.hpshow();
-        gm.buildmatrix();
-        maxlvl--;
-    }
+    gm.startgame();
 
 }
 
 
 int main() {
-
-    startgame();
+    
+    initialize();
     std:: cout<< "Final de joc";
     return 0;
 }
